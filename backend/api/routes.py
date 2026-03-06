@@ -65,3 +65,8 @@ def next_phases_status() -> dict[str, Any]:
 @router.get("/next-phases/quickstart")
 def next_phases_quickstart() -> dict[str, Any]:
     return readiness.quickstart_checklist()
+
+
+@router.get("/next-phases/integrations")
+def next_phases_integrations() -> dict[str, Any]:
+    return {"integrations": readiness.integration_status()}

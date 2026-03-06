@@ -57,3 +57,11 @@ Live Log (Append-Only)
 [2026-03-07 02:13:45 IST] Added Step 6 backend readiness APIs: /api/v1/next-phases/status and /api/v1/next-phases/quickstart with integration readiness logic (backend/services/readiness.py).
 [2026-03-07 02:13:45 IST] Added Step 6 tests and docs: tests/test_step6_next_phases.py and docs/STEP6_NEXT_PHASES.md; updated README and env templates with Phase 2/3 settings.
 [2026-03-07 02:13:45 IST] Validated Step 6: pytest passed (11 tests), rebuilt Docker stack, validate_stack.sh passed with new next-phase endpoint checks, and services healthy on 8000/8081.
+[2026-03-07 02:23:53 IST] Step 6 Phase 2 continuation started from readiness JSON handoff: all four integrations reported not configured.
+[2026-03-07 02:23:53 IST] Implemented Phase 2 scaffolding: added backend/services/connectors (splunk/jira/slack/postgres + factory/base), added /api/v1/next-phases/integrations endpoint, and enriched readiness status with completion_percent + missing_fields.
+[2026-03-07 02:23:53 IST] Added persistence baseline: backend/migrations/0001_case_tables.sql and scripts/migrate_case_store.sh; updated docs/README/validate_stack and added tests/test_step6_connectors.py.
+[2026-03-07 02:23:53 IST] Validation complete for Step 6 continuation: pytest passed (13 tests).
+[2026-03-07 02:24:42 IST] Sanity checks: scripts/validate_stack.sh and scripts/migrate_case_store.sh passed bash syntax validation.
+[2026-03-07 02:25:31 IST] Expanded Step 6 API test coverage to include /api/v1/next-phases/integrations; re-ran test suite successfully (14 passed).
+[2026-03-07 02:28:08 IST] Provided step-by-step instructions to configure real Splunk/Jira/Slack/Postgres env values and validate Postgres reachability; highlighted .env secret-safety requirement.
+[2026-03-07 02:28:37 IST] Security check: confirmed .env is currently tracked by git; advised untracking and adding .env to .gitignore before setting real credentials.

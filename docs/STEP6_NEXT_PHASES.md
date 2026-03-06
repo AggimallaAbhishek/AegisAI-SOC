@@ -11,12 +11,26 @@ Objective: Connect the SOC engine to real enterprise systems and automate case w
 - SIEM integration adapter (Splunk-compatible)
 - Ticketing integration adapter (Jira-compatible)
 - Notification integration adapter (Slack webhook)
-- Persistent case store preparation (PostgreSQL DSN)
+- Persistent case store migration baseline (PostgreSQL)
 
-### Backend readiness APIs implemented
+### Implemented in this step
+
+- Connector scaffolding under `backend/services/connectors/`:
+  - `splunk.py`
+  - `jira.py`
+  - `slack.py`
+  - `postgres.py`
+- Aggregation helpers:
+  - `backend/services/connectors/factory.py`
+- Case-store migration baseline:
+  - `backend/migrations/0001_case_tables.sql`
+  - `scripts/migrate_case_store.sh`
+
+### Backend readiness APIs
 
 - `GET /api/v1/next-phases/status`
 - `GET /api/v1/next-phases/quickstart`
+- `GET /api/v1/next-phases/integrations`
 
 ### Required environment variables
 
@@ -26,6 +40,20 @@ Objective: Connect the SOC engine to real enterprise systems and automate case w
 - `JIRA_PROJECT_KEY`
 - `SLACK_WEBHOOK_URL`
 - `POSTGRES_DSN`
+
+### Phase 2 enablement runbook
+
+1. Fill integration values in `.env`.
+2. Apply DB schema baseline:
+   ```bash
+   ./scripts/migrate_case_store.sh
+   ```
+3. Verify readiness output:
+   ```bash
+   curl -s http://localhost:8000/api/v1/next-phases/status
+   curl -s http://localhost:8000/api/v1/next-phases/integrations
+   ```
+4. Replace connector stub methods with real API calls.
 
 ## Phase 3: Intelligence and Scale
 
@@ -37,14 +65,6 @@ Objective: Add SOC intelligence loops and enterprise governance.
 - Role-based access control for analyst workflows
 - KPI and SLA reporting endpoints
 - Analyst feedback loop for tuning detections and response heuristics
-
-## Execution checklist
-
-1. Configure Phase 2 integration env vars in `.env`.
-2. Implement adapters under `backend/services/connectors/`.
-3. Add DB migrations and persistence tables.
-4. Add role model and authorization middleware.
-5. Add trend analytics endpoints and dashboard wiring.
 
 ## Validation
 

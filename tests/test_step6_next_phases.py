@@ -14,6 +14,7 @@ def test_next_phases_status_shape() -> None:
     assert "phase2" in body
     assert "phase3" in body
     assert "integrations" in body
+    assert "completion_percent" in body["phase2"]
     assert isinstance(body["integrations"], list)
 
 
@@ -38,3 +39,14 @@ def test_next_phases_quickstart_shape() -> None:
     assert isinstance(body["phase3_next_steps"], list)
     assert len(body["phase2_next_steps"]) > 0
     assert len(body["phase3_next_steps"]) > 0
+
+
+
+def test_next_phases_integrations_endpoint_shape() -> None:
+    response = client.get("/api/v1/next-phases/integrations")
+    assert response.status_code == 200
+
+    body = response.json()
+    assert isinstance(body.get("integrations"), list)
+    assert len(body["integrations"]) >= 4
+    assert all("missing_fields" in item for item in body["integrations"])

@@ -92,6 +92,7 @@ try:
     status, phase_status = get_json(f"{api}/api/v1/next-phases/status")
     assert status == 200
     assert "phase2" in phase_status and "phase3" in phase_status
+    assert "completion_percent" in phase_status["phase2"]
 except Exception as exc:
     print(f"[FAIL] Next-phase status endpoint validation failed: {exc}")
     sys.exit(1)
@@ -103,6 +104,18 @@ try:
     assert len(quickstart.get("phase3_next_steps", [])) > 0
 except Exception as exc:
     print(f"[FAIL] Next-phase quickstart endpoint validation failed: {exc}")
+    sys.exit(1)
+
+try:
+    status, integrations = get_json(f"{api}/api/v1/next-phases/integrations")
+    assert status == 200
+    records = integrations.get("integrations", [])
+    assert isinstance(records, list)
+    assert len(records) >= 4
+    for item in records:
+        assert "missing_fields" in item
+except Exception as exc:
+    print(f"[FAIL] Next-phase integrations endpoint validation failed: {exc}")
     sys.exit(1)
 
 print("[PASS] Step 5/6 stack validation passed.")

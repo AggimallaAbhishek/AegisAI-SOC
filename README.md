@@ -13,12 +13,13 @@ Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend 
 - Knowledge base lookup service
 - Playbook loader for response automation suggestions
 - Sample playbooks (`block_ip`, `isolate_host`)
-- Sample alert and seed script
+- Phase 2 readiness service and integration scaffolding
+- PostgreSQL migration baseline for case persistence
 - Tests for API and agent orchestration
 
 ## Project structure
 
-- `backend/` : API, orchestration, agents, and services
+- `backend/` : API, orchestration, agents, services, migrations
 - `frontend/` : Vite + React SOC console UI
 - `infra/` : Docker Compose and deployment docs
 - `playbooks/` : YAML response playbooks
@@ -64,7 +65,7 @@ The frontend uses `VITE_API_BASE_URL` (see `frontend/.env.example`). Default tar
 pytest -q
 ```
 
-## Step 5 validation
+## Step 5/6 validation
 
 Run full stack validation after deployment:
 
@@ -78,6 +79,14 @@ Optional custom endpoints:
 API_URL=http://localhost:8000 FRONTEND_URL=http://localhost:8081 ./scripts/validate_stack.sh
 ```
 
+## Case-store migration
+
+After setting `POSTGRES_DSN` in `.env`, apply migrations:
+
+```bash
+./scripts/migrate_case_store.sh
+```
+
 ## Useful API endpoints
 
 - `GET /api/v1/health`
@@ -87,6 +96,7 @@ API_URL=http://localhost:8000 FRONTEND_URL=http://localhost:8081 ./scripts/valid
 - `GET /api/v1/playbooks`
 - `GET /api/v1/next-phases/status`
 - `GET /api/v1/next-phases/quickstart`
+- `GET /api/v1/next-phases/integrations`
 
 ## Example analysis request
 
@@ -131,7 +141,7 @@ Stop stack:
 docker compose -f infra/docker-compose.yml down
 ```
 
-Detailed guide: [`infra/DEPLOYMENT.md`](infra/DEPLOYMENT.md)
+Detailed guide: `infra/DEPLOYMENT.md`
 
 ## CI
 
@@ -142,8 +152,14 @@ GitHub Actions workflow added at `.github/workflows/ci.yml`:
 
 ## Step 6 next phases
 
-- API readiness endpoints added for Phase 2/3 planning:
+- API readiness endpoints for Phase 2/3:
   - `GET /api/v1/next-phases/status`
   - `GET /api/v1/next-phases/quickstart`
+  - `GET /api/v1/next-phases/integrations`
+- Phase 2 connector scaffolding:
+  - `backend/services/connectors/`
+- Persistence baseline:
+  - `backend/migrations/0001_case_tables.sql`
+  - `scripts/migrate_case_store.sh`
 - Detailed roadmap document:
-  - [`docs/STEP6_NEXT_PHASES.md`](docs/STEP6_NEXT_PHASES.md)
+  - `docs/STEP6_NEXT_PHASES.md`
