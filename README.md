@@ -4,7 +4,7 @@ AegisAI SOC is a multi-agent incident triage and response orchestration platform
 
 ## Current status
 
-Step 1 (project initialization), Step 2 (backend development), and Step 3 (frontend setup) are implemented.
+Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), and Step 4 (infrastructure and deployment) are implemented.
 
 ## Backend features implemented
 
@@ -20,10 +20,10 @@ Step 1 (project initialization), Step 2 (backend development), and Step 3 (front
 
 - `backend/` : API, orchestration, agents, and services
 - `frontend/` : Vite + React SOC console UI
+- `infra/` : Docker Compose and deployment docs
 - `playbooks/` : YAML response playbooks
 - `scripts/` : sample data and helper scripts
 - `tests/` : API and orchestration tests
-- `infra/` : Docker compose setup
 
 ## Run locally
 
@@ -94,3 +94,25 @@ pytest -q
 - Incident analysis output panel (triage, investigation, response, report)
 - Knowledge base search UI
 - Playbook catalog UI
+
+## Step 4 deployment
+
+Use Docker Compose to run full stack containers (frontend + backend):
+
+```bash
+docker compose -f infra/docker-compose.yml up --build -d
+```
+
+Deployed endpoints:
+
+- Frontend: `http://localhost:8081`
+- Backend docs: `http://localhost:8000/docs`
+- Health: `http://localhost:8000/api/v1/health`
+
+Stop stack:
+
+```bash
+docker compose -f infra/docker-compose.yml down
+```
+
+Detailed guide: [`infra/DEPLOYMENT.md`](infra/DEPLOYMENT.md)

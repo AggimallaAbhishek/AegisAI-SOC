@@ -1,0 +1,48 @@
+AegisAI SOC - Project Activity Log
+==================================
+Timezone: IST (Asia/Kolkata)
+Log Format: [YYYY-MM-DD HH:MM:SS IST] Entry
+
+Important
+---------
+- This file is the official running activity log for this project.
+- From this point forward, every significant action will be appended here with exact timestamp.
+- Historical entries below are reconstructed using exact filesystem timestamps and verified execution outputs.
+
+Historical Timeline (Reconstructed with exact timestamps)
+---------------------------------------------------------
+[2026-03-07 01:03:45 IST] Git repository metadata initialized (.git present).
+[2026-03-07 01:05:53 IST] Backend workspace directory present (/backend).
+[2026-03-07 01:09:59 IST] Frontend workspace directory present (/frontend).
+[2026-03-07 01:10:41 IST] Infrastructure workspace directory present (/infra).
+[2026-03-07 01:11:13 IST] Playbooks workspace directory present (/playbooks).
+[2026-03-07 01:11:41 IST] Tests workspace directory present (/tests).
+[2026-03-07 01:12:05 IST] Scripts workspace directory present (/scripts).
+
+[2026-03-07 01:22:25 IST] Step 2 backend implementation materialized (core orchestrator/API files):
+                           - backend/api/routes.py
+                           - backend/core/orchestrator.py
+[2026-03-07 01:30:50 IST] Backend entrypoint updated with CORS middleware support (backend/main.py).
+[2026-03-07 01:30:56 IST] Environment template updated with CORS settings (.env.example).
+[2026-03-07 01:31:00 IST] Runtime environment updated with CORS settings (.env).
+[2026-03-07 01:33:22 IST] Step 3 frontend implementation materialized:
+                           - frontend/src/App.jsx
+                           - frontend/vite.config.js
+[2026-03-07 01:34:07 IST] Repository ignore rules updated (.gitignore).
+
+[2026-03-07 01:40:17 IST] Step 4 infrastructure/deployment files created:
+                           - infra/docker-compose.yml
+                           - backend/Dockerfile
+                           - frontend/Dockerfile
+                           - infra/DEPLOYMENT.md
+[2026-03-07 01:40:29 IST] README updated to include Step 4 deployment instructions.
+
+[2026-03-07 01:43:27 IST] User requested comprehensive historical + ongoing action logging in a TXT file.
+
+Live Log (Append-Only)
+----------------------
+[2026-03-07 01:43:27 IST] Logging protocol activated. Ongoing actions will be appended from this point onward.
+[2026-03-07 01:44:50 IST] Created PROJECT_ACTIVITY_LOG.txt with reconstructed history and enabled ongoing logging workflow.
+[2026-03-07 01:45:04 IST] Delivered activity log to user and enabled forward-logging commitment for all subsequent project actions.
+[2026-03-07 01:47:32 IST] Diagnosed Docker deployment failure: port 8080 was already allocated by Jenkins container.
+[2026-03-07 01:47:32 IST] Applied infrastructure fix: moved frontend publish port from 8080 to 8081 in infra/docker-compose.yml and updated docs (README + infra/DEPLOYMENT.md).
