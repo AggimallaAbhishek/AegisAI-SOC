@@ -49,3 +49,7 @@ Live Log (Append-Only)
 [2026-03-07 01:50:07 IST] Fixed frontend container healthcheck probe target from localhost to 127.0.0.1 to avoid IPv6 localhost refusal in nginx container.
 [2026-03-07 01:51:22 IST] Resolved deployment startup issue: frontend port conflict with Jenkins on 8080. Reassigned frontend publish port to 8081, restarted service, and verified both services healthy.
 [2026-03-07 01:51:22 IST] Validated live endpoints: frontend http://localhost:8081 (HTTP 200) and backend health http://localhost:8000/api/v1/health (status ok).
+[2026-03-07 02:00:16 IST] Reviewed user-provided validation screenshots; confirmed Step 3/4 runtime behavior is correct and started Step 5 (testing and validation hardening).
+[2026-03-07 02:03:23 IST] Implemented Step 5 testing assets: tests/test_step5_validation.py, scripts/validate_stack.sh, and GitHub CI workflow (.github/workflows/ci.yml).
+[2026-03-07 02:03:23 IST] Validated Step 5 artifacts: pytest passed (8 tests), frontend build passed, and scripts/validate_stack.sh reported PASS.
+[2026-03-07 02:03:23 IST] Confirmed Docker services healthy after Step 5 validation: api (8000) and frontend (8081).

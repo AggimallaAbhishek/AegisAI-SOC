@@ -4,7 +4,7 @@ AegisAI SOC is a multi-agent incident triage and response orchestration platform
 
 ## Current status
 
-Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), and Step 4 (infrastructure and deployment) are implemented.
+Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), and Step 5 (testing and validation) are implemented.
 
 ## Backend features implemented
 
@@ -64,6 +64,20 @@ The frontend uses `VITE_API_BASE_URL` (see `frontend/.env.example`). Default tar
 pytest -q
 ```
 
+## Step 5 validation
+
+Run full stack validation after deployment:
+
+```bash
+./scripts/validate_stack.sh
+```
+
+Optional custom endpoints:
+
+```bash
+API_URL=http://localhost:8000 FRONTEND_URL=http://localhost:8081 ./scripts/validate_stack.sh
+```
+
 ## Useful API endpoints
 
 - `GET /api/v1/health`
@@ -116,3 +130,10 @@ docker compose -f infra/docker-compose.yml down
 ```
 
 Detailed guide: [`infra/DEPLOYMENT.md`](infra/DEPLOYMENT.md)
+
+## CI
+
+GitHub Actions workflow added at `.github/workflows/ci.yml`:
+
+- Runs backend test suite (`pytest`)
+- Builds frontend (`npm run build`)
