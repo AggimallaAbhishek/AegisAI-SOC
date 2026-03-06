@@ -1,10 +1,10 @@
 # AegisAI SOC
 
-AegisAI SOC is a multi-agent incident triage and response orchestration backend for SOC workflows.
+AegisAI SOC is a multi-agent incident triage and response orchestration platform with a FastAPI backend and React frontend.
 
 ## Current status
 
-Step 1 (project initialization) is complete and Step 2 (backend development) is now implemented.
+Step 1 (project initialization), Step 2 (backend development), and Step 3 (frontend setup) are implemented.
 
 ## Backend features implemented
 
@@ -19,6 +19,7 @@ Step 1 (project initialization) is complete and Step 2 (backend development) is 
 ## Project structure
 
 - `backend/` : API, orchestration, agents, and services
+- `frontend/` : Vite + React SOC console UI
 - `playbooks/` : YAML response playbooks
 - `scripts/` : sample data and helper scripts
 - `tests/` : API and orchestration tests
@@ -37,6 +38,25 @@ Step 1 (project initialization) is complete and Step 2 (backend development) is 
    ```
 4. Open API docs:
    - http://localhost:8000/docs
+
+## Run frontend
+
+1. Open a new terminal and go to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the UI:
+   ```bash
+   npm run dev
+   ```
+4. Open:
+   - http://localhost:5173
+
+The frontend uses `VITE_API_BASE_URL` (see `frontend/.env.example`). Default target is `http://localhost:8000`.
 
 ## Run tests
 
@@ -67,6 +87,10 @@ pytest -q
 }
 ```
 
-## Next process after this step
+## Frontend features implemented
 
-Step 3 is frontend setup to visualize alert ingestion, triage output, and response actions.
+- Alert intake form with sample-fill support
+- Live backend health indicator
+- Incident analysis output panel (triage, investigation, response, report)
+- Knowledge base search UI
+- Playbook catalog UI

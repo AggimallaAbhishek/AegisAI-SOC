@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     api_version: str = "0.1.0"
     knowledge_base_path: str = "scripts/sample_data/knowledge_base.json"
     playbooks_path: str = "playbooks"
+    cors_allow_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -29,6 +30,14 @@ class Settings(BaseSettings):
         if path.is_absolute():
             return path
         return self.repo_root / path
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [
+            origin.strip()
+            for origin in self.cors_allow_origins.split(",")
+            if origin.strip()
+        ]
 
 
 @lru_cache(maxsize=1)
