@@ -4,7 +4,7 @@ AegisAI SOC is a multi-agent incident triage and response orchestration platform
 
 ## Current status
 
-Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), and Step 5 (testing and validation) are implemented.
+Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), Step 5 (testing and validation), and Step 6 (next phases planning/foundation) are implemented.
 
 ## Backend features implemented
 
@@ -85,6 +85,8 @@ API_URL=http://localhost:8000 FRONTEND_URL=http://localhost:8081 ./scripts/valid
 - `POST /api/v1/alerts/analyze/raw`
 - `GET /api/v1/knowledge/search?query=mimikatz`
 - `GET /api/v1/playbooks`
+- `GET /api/v1/next-phases/status`
+- `GET /api/v1/next-phases/quickstart`
 
 ## Example analysis request
 
@@ -137,3 +139,11 @@ GitHub Actions workflow added at `.github/workflows/ci.yml`:
 
 - Runs backend test suite (`pytest`)
 - Builds frontend (`npm run build`)
+
+## Step 6 next phases
+
+- API readiness endpoints added for Phase 2/3 planning:
+  - `GET /api/v1/next-phases/status`
+  - `GET /api/v1/next-phases/quickstart`
+- Detailed roadmap document:
+  - [`docs/STEP6_NEXT_PHASES.md`](docs/STEP6_NEXT_PHASES.md)

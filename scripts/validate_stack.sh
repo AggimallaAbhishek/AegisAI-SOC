@@ -4,7 +4,7 @@ set -euo pipefail
 API_URL="${API_URL:-http://localhost:8000}"
 FRONTEND_URL="${FRONTEND_URL:-http://localhost:8081}"
 
-printf '\n[STEP 5] Stack validation started\n'
+printf '\n[STEP 5/6] Stack validation started\n'
 printf '[INFO] API_URL=%s\n' "$API_URL"
 printf '[INFO] FRONTEND_URL=%s\n\n' "$FRONTEND_URL"
 
@@ -88,5 +88,22 @@ except Exception as exc:
     print(f"[FAIL] Playbook endpoint validation failed: {exc}")
     sys.exit(1)
 
-print("[PASS] Step 5 stack validation passed.")
+try:
+    status, phase_status = get_json(f"{api}/api/v1/next-phases/status")
+    assert status == 200
+    assert "phase2" in phase_status and "phase3" in phase_status
+except Exception as exc:
+    print(f"[FAIL] Next-phase status endpoint validation failed: {exc}")
+    sys.exit(1)
+
+try:
+    status, quickstart = get_json(f"{api}/api/v1/next-phases/quickstart")
+    assert status == 200
+    assert len(quickstart.get("phase2_next_steps", [])) > 0
+    assert len(quickstart.get("phase3_next_steps", [])) > 0
+except Exception as exc:
+    print(f"[FAIL] Next-phase quickstart endpoint validation failed: {exc}")
+    sys.exit(1)
+
+print("[PASS] Step 5/6 stack validation passed.")
 PY

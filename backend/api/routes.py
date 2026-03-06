@@ -7,10 +7,12 @@ from fastapi import APIRouter, HTTPException, Query
 from backend.core.config import get_settings
 from backend.core.orchestrator import SOCOrchestrator
 from backend.core.schemas import AlertIn, AnalysisResult
+from backend.services.readiness import ReadinessService
 
 router = APIRouter(prefix="/api/v1", tags=["soc"])
 
 orchestrator = SOCOrchestrator()
+readiness = ReadinessService()
 
 
 @router.get("/health")
@@ -53,3 +55,13 @@ def get_playbook(playbook_id: str) -> dict[str, Any]:
     if not playbook:
         raise HTTPException(status_code=404, detail=f"Playbook '{playbook_id}' not found")
     return playbook
+
+
+@router.get("/next-phases/status")
+def next_phases_status() -> dict[str, Any]:
+    return readiness.next_phases_status()
+
+
+@router.get("/next-phases/quickstart")
+def next_phases_quickstart() -> dict[str, Any]:
+    return readiness.quickstart_checklist()
