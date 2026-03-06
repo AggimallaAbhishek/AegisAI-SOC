@@ -1,0 +1,23 @@
+[
+  {
+    "entry_id": "KB-001",
+    "title": "Mimikatz Credential Dumping",
+    "content": "Mimikatz execution indicates possible credential dumping from LSASS memory. Prioritize host isolation and credential reset.",
+    "tags": ["credential_access", "mimikatz", "lsass", "T1003"],
+    "references": ["MITRE ATT&CK T1003"]
+  },
+  {
+    "entry_id": "KB-002",
+    "title": "Suspicious PowerShell Encoded Commands",
+    "content": "PowerShell encoded commands are often used for defense evasion and payload delivery.",
+    "tags": ["powershell", "execution", "defense_evasion", "T1059"],
+    "references": ["MITRE ATT&CK T1059.001"]
+  },
+  {
+    "entry_id": "KB-003",
+    "title": "Host Isolation Guidance",
+    "content": "If active compromise is suspected, isolate host from network while preserving forensic data.",
+    "tags": ["containment", "isolation", "incident_response"],
+    "references": ["NIST 800-61"]
+  }
+]

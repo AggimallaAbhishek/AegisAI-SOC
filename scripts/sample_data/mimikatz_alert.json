@@ -1,0 +1,11 @@
+{
+  "source": "SIEM",
+  "timestamp": "2026-03-07T12:30:00Z",
+  "host": "FIN-WS-442",
+  "user": "finance.admin",
+  "ip_address": "203.0.113.56",
+  "process_name": "mimikatz.exe",
+  "command_line": "mimikatz.exe sekurlsa::logonpasswords",
+  "description": "Potential credential dumping behavior detected on endpoint",
+  "severity": "high"
+}

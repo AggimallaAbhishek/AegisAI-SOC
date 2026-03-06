@@ -1,0 +1,10 @@
+{
+  "name": "aegisai-soc-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "echo \"Frontend implementation starts in Step 3\"",
+    "build": "echo \"Frontend implementation starts in Step 3\"",
+    "test": "echo \"Frontend implementation starts in Step 3\""
+  }
+}

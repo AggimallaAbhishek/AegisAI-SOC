@@ -1,0 +1,10 @@
+id: isolate_host
+name: Isolate Compromised Host
+description: Remove a host from network communication while preserving forensic evidence.
+parameters:
+  - host
+steps:
+  - Move endpoint to quarantine VLAN or EDR network isolation mode.
+  - Preserve volatile artifacts (memory, process list, netstat) before reboot.
+  - Notify IT and incident commander of endpoint isolation.
+  - Approve staged remediation once triage is complete.

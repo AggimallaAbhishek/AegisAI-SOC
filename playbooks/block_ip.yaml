@@ -1,0 +1,10 @@
+id: block_ip
+name: Block Suspicious IP
+description: Contain outbound/inbound malicious traffic by blocking the identified IP.
+parameters:
+  - ip_address
+steps:
+  - Validate the IP against threat intelligence sources.
+  - Add a firewall rule to block the IP at perimeter and host levels.
+  - Confirm active sessions from that IP are terminated.
+  - Monitor for retry attempts from related infrastructure.
