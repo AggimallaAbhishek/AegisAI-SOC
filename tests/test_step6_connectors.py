@@ -1,3 +1,5 @@
+import pytest
+
 from backend.core.config import get_settings
 from backend.services.connectors import build_connectors
 from backend.services.readiness import ReadinessService
@@ -12,19 +14,23 @@ INTEGRATION_ENV_VARS = [
 ]
 
 
-def _clear_integration_env(monkeypatch) -> None:
-    for name in INTEGRATION_ENV_VARS:
-        monkeypatch.delenv(name, raising=False)
-
-
-def _clear_settings_cache() -> None:
+@pytest.fixture(autouse=True)
+def _settings_cache_reset() -> None:
     get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
+
+
+
+def _clear_integration_env(monkeypatch) -> None:
+    # Override .env-backed settings with explicit empty values for deterministic tests.
+    for name in INTEGRATION_ENV_VARS:
+        monkeypatch.setenv(name, "")
 
 
 
 def test_connectors_report_missing_fields_when_not_configured(monkeypatch) -> None:
     _clear_integration_env(monkeypatch)
-    _clear_settings_cache()
 
     checks = [connector.check().as_dict() for connector in build_connectors()]
     assert all(item["configured"] is False for item in checks)
@@ -43,7 +49,6 @@ def test_readiness_transitions_to_ready_when_all_integrations_configured(monkeyp
     monkeypatch.setenv("JIRA_PROJECT_KEY", "SOC")
     monkeypatch.setenv("SLACK_WEBHOOK_URL", "https://hooks.slack.com/services/T/B/C")
     monkeypatch.setenv("POSTGRES_DSN", "postgresql://soc:soc@localhost:5432/aegis")
-    _clear_settings_cache()
 
     readiness = ReadinessService()
     phase_status = readiness.next_phases_status()

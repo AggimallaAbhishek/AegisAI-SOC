@@ -108,3 +108,17 @@ Live Log (Append-Only)
 [2026-03-07 16:21:56 IST] Validated RDS PostgreSQL authentication/query success via psql (current_user/current_database/now). Provided final completion steps: migration, stack restart, readiness and validation checks.
 [2026-03-07 16:23:35 IST] Phase 2 completion achieved: all integrations configured=true (Splunk, Jira, Slack, Postgres), RDS migrations applied, and scripts/validate_stack.sh passed after full stack restart.
 [2026-03-07 16:23:35 IST] Post-completion action items shared: rotate any exposed secrets, remove unnecessary SG rule (Custom TCP port 0), and prepare commit/push for Step 6 artifacts and logs.
+[2026-03-07 17:23:53 IST] Started Step 7 (Phase 3 foundation): implementing RBAC controls, threat-intel enrichment hooks, and KPI/SLA dashboard APIs.
+[2026-03-07 17:23:53 IST] Implemented Phase 3 backend services and data assets: backend/services/{rbac.py,threat_intel.py,metrics.py}, scripts/sample_data/{threat_intel_iocs.json,phase3_metrics.json}.
+[2026-03-07 17:23:53 IST] Integrated Phase 3 into API/orchestration: new /api/v1/phase3 endpoints, RBAC enforcement hooks, threat_intel field in investigation schema, and orchestrator enrichment merge logic.
+[2026-03-07 17:23:53 IST] Updated validation and docs for Step 7: scripts/validate_stack.sh, scripts/migrate_case_store.sh, .env.example, README.md, docs/STEP7_PHASE3.md, tests/test_step7_phase3.py, and test env determinism fix in tests/test_step6_connectors.py.
+[2026-03-07 17:23:53 IST] Validation complete for Step 7: pytest passed (17 tests), docker stack rebuilt, and scripts/validate_stack.sh passed with Step 5/6/7 checks.
+[2026-03-07 17:28:53 IST] Continuing Step 7+: implementing live Postgres-backed case persistence and KPI/SLA aggregation with fallback to sample metrics.
+[2026-03-07 18:10:48 IST] Continued Phase 3 beyond foundation: added backend/services/case_store.py for best-effort Postgres persistence and live KPI/SLA source reads with graceful fallback.
+[2026-03-07 18:10:48 IST] Extended API/flow for Phase 3 live operations: analysis now returns case_id, orchestrator persists cases/events, and new endpoint GET /api/v1/phase3/case-store/status added.
+[2026-03-07 18:10:48 IST] Added Postgres/Phase 3 migrations 0002_phase3_case_metrics.sql, 0003_fix_severity_enum_strings.sql, 0004_fix_resolved_created_order.sql and applied migrations successfully.
+[2026-03-07 18:10:48 IST] Validated continuation: .venv/bin/pytest -q => 21 passed; docker compose rebuild + scripts/validate_stack.sh => PASS; live API checks confirmed data_source=postgres for KPI/SLA.
+[2026-03-07 18:10:48 IST] Fixed runtime defects discovered during smoke test: severity enum string persistence and schema-column cache after migration; corrected created_at/resolved_at ordering for accurate KPI calculations.
+[2026-03-07 18:13:08 IST] Post-implementation QA detected KPI inconsistency (resolved_incidents=0 despite resolved cases); root causes fixed in case_store severity serialization and created_at/resolved_at ordering logic.
+[2026-03-07 18:13:08 IST] Added and applied migration 0004_fix_resolved_created_order.sql; re-ran stack rebuild and validate_stack.sh successfully after fix.
+[2026-03-07 18:13:08 IST] Final runtime verification: /api/v1/phase3/case-store/status ready=true and KPI/SLA endpoints reporting data_source=postgres with live metrics.

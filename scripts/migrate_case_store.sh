@@ -4,11 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MIGRATIONS_DIR="$ROOT_DIR/backend/migrations"
 
-if [[ -f "$ROOT_DIR/.env" ]]; then
-  set -a
-  # shellcheck disable=SC1090
-  source "$ROOT_DIR/.env"
-  set +a
+if [[ -z "${POSTGRES_DSN:-}" && -f "$ROOT_DIR/.env" ]]; then
+  POSTGRES_DSN="$(sed -n 's/^POSTGRES_DSN=//p' "$ROOT_DIR/.env")"
 fi
 
 if [[ ! -d "$MIGRATIONS_DIR" ]]; then

@@ -16,12 +16,23 @@ class Settings(BaseSettings):
     cors_allow_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     phase2_enabled: bool = True
     phase3_enabled: bool = True
+
+    # Phase 2 integration settings
     splunk_base_url: str = ""
     splunk_api_token: str = ""
     jira_base_url: str = ""
     jira_project_key: str = ""
     slack_webhook_url: str = ""
     postgres_dsn: str = ""
+
+    # Phase 3 settings
+    phase3_rbac_enforced: bool = False
+    soc_role_header: str = "x-soc-role"
+    soc_default_role: str = "analyst"
+    threat_intel_enabled: bool = True
+    threat_intel_ioc_path: str = "scripts/sample_data/threat_intel_iocs.json"
+    phase3_metrics_path: str = "scripts/sample_data/phase3_metrics.json"
+    phase3_sla_target_minutes: int = 30
 
     model_config = SettingsConfigDict(
         env_file=".env",

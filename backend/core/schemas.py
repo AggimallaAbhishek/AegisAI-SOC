@@ -43,6 +43,7 @@ class InvestigationResult(BaseModel):
     mapped_techniques: List[str] = Field(default_factory=list)
     confidence: float = Field(ge=0.0, le=1.0)
     knowledge_hits: List[str] = Field(default_factory=list)
+    threat_intel: Dict[str, Any] = Field(default_factory=dict)
 
 
 class ResponseAction(BaseModel):
@@ -66,6 +67,7 @@ class ReportResult(BaseModel):
 
 
 class AnalysisResult(BaseModel):
+    case_id: Optional[str] = None
     alert: AlertEvent
     triage: TriageDecision
     investigation: InvestigationResult

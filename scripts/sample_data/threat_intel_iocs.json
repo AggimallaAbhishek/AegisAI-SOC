@@ -1,0 +1,29 @@
+[
+  {
+    "ioc_type": "ip",
+    "value": "203.0.113.56",
+    "threat_family": "credential_theft",
+    "confidence": 0.96,
+    "source": "internal_feed",
+    "mapped_techniques": ["T1003 - OS Credential Dumping"],
+    "tags": ["known_bad_ip", "credential_access"]
+  },
+  {
+    "ioc_type": "process",
+    "value": "mimikatz.exe",
+    "threat_family": "credential_theft",
+    "confidence": 0.93,
+    "source": "community_ioc",
+    "mapped_techniques": ["T1003 - OS Credential Dumping"],
+    "tags": ["mimikatz", "lsass"]
+  },
+  {
+    "ioc_type": "command_substring",
+    "value": "sekurlsa::logonpasswords",
+    "threat_family": "credential_theft",
+    "confidence": 0.9,
+    "source": "behavioral_rules",
+    "mapped_techniques": ["T1003 - OS Credential Dumping"],
+    "tags": ["credential_dumping"]
+  }
+]

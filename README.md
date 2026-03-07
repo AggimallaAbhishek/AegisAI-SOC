@@ -4,7 +4,7 @@ AegisAI SOC is a multi-agent incident triage and response orchestration platform
 
 ## Current status
 
-Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), Step 5 (testing and validation), and Step 6 (next phases planning/foundation) are implemented.
+Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), Step 5 (testing and validation), Step 6 (integration and automation readiness), and Step 7 (Phase 3 foundation) are implemented.
 
 ## Backend features implemented
 
@@ -15,6 +15,10 @@ Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend 
 - Sample playbooks (`block_ip`, `isolate_host`)
 - Phase 2 readiness service and integration scaffolding
 - PostgreSQL migration baseline for case persistence
+- Phase 3 RBAC policy service
+- Phase 3 threat-intel enrichment hook
+- Phase 3 KPI/SLA dashboard services and APIs
+- Live Postgres-backed case persistence and dashboard aggregation with sample fallback
 - Tests for API and agent orchestration
 
 ## Project structure
@@ -65,7 +69,7 @@ The frontend uses `VITE_API_BASE_URL` (see `frontend/.env.example`). Default tar
 pytest -q
 ```
 
-## Step 5/6 validation
+## Step 5/6/7 validation
 
 Run full stack validation after deployment:
 
@@ -97,6 +101,12 @@ After setting `POSTGRES_DSN` in `.env`, apply migrations:
 - `GET /api/v1/next-phases/status`
 - `GET /api/v1/next-phases/quickstart`
 - `GET /api/v1/next-phases/integrations`
+- `GET /api/v1/phase3/rbac/policy`
+- `GET /api/v1/phase3/threat-intel/status`
+- `GET /api/v1/phase3/case-store/status`
+- `GET /api/v1/phase3/kpi/overview`
+- `GET /api/v1/phase3/kpi/trends`
+- `GET /api/v1/phase3/sla/overview`
 
 ## Example analysis request
 
@@ -150,16 +160,7 @@ GitHub Actions workflow added at `.github/workflows/ci.yml`:
 - Runs backend test suite (`pytest`)
 - Builds frontend (`npm run build`)
 
-## Step 6 next phases
+## Phase roadmap docs
 
-- API readiness endpoints for Phase 2/3:
-  - `GET /api/v1/next-phases/status`
-  - `GET /api/v1/next-phases/quickstart`
-  - `GET /api/v1/next-phases/integrations`
-- Phase 2 connector scaffolding:
-  - `backend/services/connectors/`
-- Persistence baseline:
-  - `backend/migrations/0001_case_tables.sql`
-  - `scripts/migrate_case_store.sh`
-- Detailed roadmap document:
-  - `docs/STEP6_NEXT_PHASES.md`
+- `docs/STEP6_NEXT_PHASES.md`
+- `docs/STEP7_PHASE3.md`
