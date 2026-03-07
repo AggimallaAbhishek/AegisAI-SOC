@@ -73,3 +73,4 @@ class AnalysisResult(BaseModel):
     investigation: InvestigationResult
     response: ResponsePlan
     report: ReportResult
+    automation: Dict[str, Any] = Field(default_factory=dict)

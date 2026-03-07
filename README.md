@@ -4,7 +4,7 @@ AegisAI SOC is a multi-agent incident triage and response orchestration platform
 
 ## Current status
 
-Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), Step 5 (testing and validation), Step 6 (integration and automation readiness), and Step 7 (Phase 3 foundation) are implemented.
+Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend setup), Step 4 (infrastructure and deployment), Step 5 (testing and validation), Step 6 (integration and automation readiness), Step 7 (Phase 3 foundation), Step 8 (role-aware frontend console), and Step 9 (live Jira/Slack automation) are implemented.
 
 ## Backend features implemented
 
@@ -14,6 +14,7 @@ Step 1 (project initialization), Step 2 (backend development), Step 3 (frontend 
 - Playbook loader for response automation suggestions
 - Sample playbooks (`block_ip`, `isolate_host`)
 - Phase 2 readiness service and integration scaffolding
+- Live Jira ticket creation and Slack escalation automation hooks
 - PostgreSQL migration baseline for case persistence
 - Phase 3 RBAC policy service
 - Phase 3 threat-intel enrichment hook
@@ -90,6 +91,18 @@ After setting `POSTGRES_DSN` in `.env`, apply migrations:
 ```bash
 ./scripts/migrate_case_store.sh
 ```
+
+## Phase 2 live automation config
+
+To enable real Jira ticket creation and Slack webhook delivery from `/api/v1/alerts/analyze`, set:
+
+- `JIRA_BASE_URL`
+- `JIRA_PROJECT_KEY`
+- `JIRA_USER_EMAIL`
+- `JIRA_API_TOKEN`
+- `JIRA_ISSUE_TYPE` (optional, default `Task`)
+- `SLACK_WEBHOOK_URL`
+- `PHASE2_AUTOMATION_ENABLED=true`
 
 ## Useful API endpoints
 

@@ -22,8 +22,12 @@ class Settings(BaseSettings):
     splunk_api_token: str = ""
     jira_base_url: str = ""
     jira_project_key: str = ""
+    jira_user_email: str = ""
+    jira_api_token: str = ""
+    jira_issue_type: str = "Task"
     slack_webhook_url: str = ""
     postgres_dsn: str = ""
+    phase2_automation_enabled: bool = True
 
     # Phase 3 settings
     phase3_rbac_enforced: bool = False

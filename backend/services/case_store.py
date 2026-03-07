@@ -128,6 +128,7 @@ class CaseStoreService:
                         "investigation": result.investigation.model_dump(),
                         "response": result.response.model_dump(),
                         "report": result.report.model_dump(),
+                        "automation": result.automation,
                     }
                 )
                 cur.execute(

@@ -16,6 +16,8 @@ from backend.core.config import get_settings
 def _isolate_settings(monkeypatch) -> None:
     # Keep tests deterministic even when local .env enables strict RBAC.
     monkeypatch.setenv("PHASE3_RBAC_ENFORCED", "false")
+    # Disable live outbound connector calls during tests.
+    monkeypatch.setenv("PHASE2_AUTOMATION_ENABLED", "false")
     get_settings.cache_clear()
     yield
     get_settings.cache_clear()

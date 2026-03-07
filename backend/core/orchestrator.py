@@ -5,6 +5,7 @@ from backend.agents.reporting import build_report
 from backend.agents.response import run_response
 from backend.agents.triage import run_triage
 from backend.core.schemas import AlertEvent, AlertIn, AnalysisResult, InvestigationResult
+from backend.services.automation import IntegrationAutomationService
 from backend.services.case_store import CaseStoreService
 from backend.services.ingest import normalize_alert
 from backend.services.knowledge import KnowledgeService
@@ -19,11 +20,13 @@ class SOCOrchestrator:
         playbook_service: PlaybookService | None = None,
         threat_intel_service: ThreatIntelService | None = None,
         case_store_service: CaseStoreService | None = None,
+        automation_service: IntegrationAutomationService | None = None,
     ) -> None:
         self.knowledge_service = knowledge_service or KnowledgeService()
         self.playbook_service = playbook_service or PlaybookService()
         self.threat_intel_service = threat_intel_service or ThreatIntelService()
         self.case_store_service = case_store_service or CaseStoreService()
+        self.automation_service = automation_service or IntegrationAutomationService()
 
     def _merge_threat_intel(
         self,
@@ -83,6 +86,8 @@ class SOCOrchestrator:
             response=response,
             report=report,
         )
+        automation = self.automation_service.run_post_analysis(result)
+        result = result.model_copy(update={"automation": automation})
 
         # Persistence is best-effort. API response should still return even when case store is unavailable.
         self.case_store_service.persist_analysis(result)
