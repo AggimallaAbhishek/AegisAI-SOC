@@ -38,8 +38,12 @@ Objective: Connect the SOC engine to real enterprise systems and automate case w
 - `SPLUNK_API_TOKEN`
 - `JIRA_BASE_URL`
 - `JIRA_PROJECT_KEY`
+- `JIRA_USER_EMAIL` (for live Jira ticket creation)
+- `JIRA_API_TOKEN` (for live Jira ticket creation)
+- `JIRA_ISSUE_TYPE` (optional, default `Task`)
 - `SLACK_WEBHOOK_URL`
 - `POSTGRES_DSN`
+- `PHASE2_AUTOMATION_ENABLED` (default `true`)
 
 ### Phase 2 enablement runbook
 
@@ -53,7 +57,7 @@ Objective: Connect the SOC engine to real enterprise systems and automate case w
    curl -s http://localhost:8000/api/v1/next-phases/status
    curl -s http://localhost:8000/api/v1/next-phases/integrations
    ```
-4. Replace connector stub methods with real API calls.
+4. Run a sample incident analysis and confirm `automation` payload includes Jira/Slack outcomes.
 
 ## Phase 3: Intelligence and Scale
 

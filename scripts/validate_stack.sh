@@ -4,7 +4,7 @@ set -euo pipefail
 API_URL="${API_URL:-http://localhost:8000}"
 FRONTEND_URL="${FRONTEND_URL:-http://localhost:8081}"
 
-printf '\n[STEP 5/6/7] Stack validation started\n'
+printf '\n[STEP 5/6/7/8/9] Stack validation started\n'
 printf '[INFO] API_URL=%s\n' "$API_URL"
 printf '[INFO] FRONTEND_URL=%s\n\n' "$FRONTEND_URL"
 
@@ -73,6 +73,9 @@ try:
     assert analysis["response"]["containment_priority"] in {"P1", "P2"}
     assert "threat_intel" in analysis["investigation"]
     assert analysis.get("case_id")
+    assert "automation" in analysis
+    assert "jira" in analysis["automation"]
+    assert "slack" in analysis["automation"]
 except Exception as exc:
     print(f"[FAIL] Analysis endpoint validation failed: {exc}")
     sys.exit(1)
@@ -172,5 +175,5 @@ except Exception as exc:
     print(f"[FAIL] RBAC policy endpoint validation failed: {exc}")
     sys.exit(1)
 
-print("[PASS] Step 5/6/7 stack validation passed.")
+print("[PASS] Step 5/6/7/8/9 stack validation passed.")
 PY
