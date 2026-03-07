@@ -1,5 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
-import { analyzeAlert, getHealth, getPlaybooks, searchKnowledge } from "./api";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  analyzeAlert,
+  getCaseStoreStatus,
+  getHealth,
+  getKpiOverview,
+  getKpiTrends,
+  getPlaybooks,
+  getSlaOverview,
+  searchKnowledge
+} from "./api";
+
+const ROLE_OPTIONS = ["admin", "manager", "analyst", "viewer"];
 
 const SAMPLE_ALERT = {
   source: "SIEM",
@@ -36,8 +47,21 @@ function prettyTime(isoString) {
   }
 }
 
+function safePercent(value) {
+  if (typeof value !== "number") return "0.00";
+  return value.toFixed(2);
+}
+
 export default function App() {
+  const isMounted = useRef(true);
+
   const [health, setHealth] = useState({ status: "checking", version: "-" });
+  const [lastCheck, setLastCheck] = useState(new Date().toISOString());
+  const [role, setRole] = useState(() => {
+    const stored = window.localStorage.getItem("aegisai_soc_role") || "analyst";
+    return ROLE_OPTIONS.includes(stored) ? stored : "analyst";
+  });
+
   const [alertForm, setAlertForm] = useState(EMPTY_ALERT);
   const [analysis, setAnalysis] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
@@ -51,45 +75,104 @@ export default function App() {
   const [playbooks, setPlaybooks] = useState([]);
   const [playbookError, setPlaybookError] = useState("");
 
+  const [kpi, setKpi] = useState(null);
+  const [sla, setSla] = useState(null);
+  const [trends, setTrends] = useState(null);
+  const [caseStore, setCaseStore] = useState(null);
+  const [phase3Loading, setPhase3Loading] = useState(false);
+  const [phase3Error, setPhase3Error] = useState("");
+
   useEffect(() => {
-    let active = true;
-
-    async function loadHealth() {
-      try {
-        const data = await getHealth();
-        if (!active) return;
-        setHealth({ status: data.status, version: data.version || "-" });
-      } catch {
-        if (!active) return;
-        setHealth({ status: "offline", version: "-" });
-      }
-    }
-
-    async function loadPlaybooks() {
-      try {
-        const data = await getPlaybooks();
-        if (!active) return;
-        setPlaybooks(Array.isArray(data.playbooks) ? data.playbooks : []);
-      } catch (error) {
-        if (!active) return;
-        setPlaybookError(error.message || "Failed to load playbooks");
-      }
-    }
-
-    loadHealth();
-    loadPlaybooks();
-
-    const timer = setInterval(loadHealth, 15000);
     return () => {
-      active = false;
-      clearInterval(timer);
+      isMounted.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("aegisai_soc_role", role);
+  }, [role]);
+
+  async function loadHealthData(activeRole) {
+    try {
+      const data = await getHealth(activeRole);
+      if (!isMounted.current) return;
+      setHealth({ status: data.status, version: data.version || "-" });
+    } catch {
+      if (!isMounted.current) return;
+      setHealth({ status: "offline", version: "-" });
+    } finally {
+      if (!isMounted.current) return;
+      setLastCheck(new Date().toISOString());
+    }
+  }
+
+  async function loadPlaybookData(activeRole) {
+    try {
+      const data = await getPlaybooks(activeRole);
+      if (!isMounted.current) return;
+      setPlaybooks(Array.isArray(data.playbooks) ? data.playbooks : []);
+      setPlaybookError("");
+    } catch (error) {
+      if (!isMounted.current) return;
+      setPlaybookError(error.message || "Failed to load playbooks");
+    }
+  }
+
+  async function loadPhase3Data(activeRole, showLoader = true) {
+    if (showLoader) {
+      setPhase3Loading(true);
+    }
+    setPhase3Error("");
+
+    try {
+      const [kpiData, slaData, trendData, caseStoreData] = await Promise.all([
+        getKpiOverview(30, activeRole),
+        getSlaOverview(30, activeRole),
+        getKpiTrends(14, activeRole),
+        getCaseStoreStatus(activeRole)
+      ]);
+
+      if (!isMounted.current) return;
+      setKpi(kpiData);
+      setSla(slaData);
+      setTrends(trendData);
+      setCaseStore(caseStoreData);
+    } catch (error) {
+      if (!isMounted.current) return;
+      setPhase3Error(error.message || "Phase 3 dashboard request failed");
+    } finally {
+      if (!isMounted.current) return;
+      if (showLoader) {
+        setPhase3Loading(false);
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadHealthData(role);
+    loadPlaybookData(role);
+    loadPhase3Data(role, true);
+
+    const timer = setInterval(() => {
+      loadHealthData(role);
+      loadPhase3Data(role, false);
+    }, 15000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [role]);
 
   const canAnalyze = useMemo(
     () => alertForm.host.trim() && alertForm.description.trim(),
     [alertForm]
   );
+
+  const latestTrend = useMemo(() => {
+    const rows = trends?.daily_incidents;
+    if (!Array.isArray(rows) || rows.length === 0) return null;
+    return rows[rows.length - 1];
+  }, [trends]);
 
   async function handleAnalyze(event) {
     event.preventDefault();
@@ -100,11 +183,15 @@ export default function App() {
         ...alertForm,
         source: alertForm.source || "SIEM"
       };
-      const data = await analyzeAlert(payload);
+      const data = await analyzeAlert(payload, role);
+      if (!isMounted.current) return;
       setAnalysis(data);
+      await loadPhase3Data(role, false);
     } catch (error) {
+      if (!isMounted.current) return;
       setAnalyzeError(error.message || "Failed to analyze alert");
     } finally {
+      if (!isMounted.current) return;
       setAnalyzing(false);
     }
   }
@@ -117,11 +204,14 @@ export default function App() {
     setKnowledgeError("");
     setKnowledgeLoading(true);
     try {
-      const data = await searchKnowledge(query);
+      const data = await searchKnowledge(query, role);
+      if (!isMounted.current) return;
       setKnowledgeResults(Array.isArray(data.results) ? data.results : []);
     } catch (error) {
+      if (!isMounted.current) return;
       setKnowledgeError(error.message || "Knowledge search failed");
     } finally {
+      if (!isMounted.current) return;
       setKnowledgeLoading(false);
     }
   }
@@ -147,7 +237,7 @@ export default function App() {
       <div className="bg-orb orb-3" />
 
       <header className="hero reveal">
-        <p className="eyebrow">Step 3 Frontend Console</p>
+        <p className="eyebrow">Step 8 Frontend Console</p>
         <h1>AegisAI SOC Mission Panel</h1>
         <p>
           Unified incident workflow for alert intake, triage interpretation, and response actioning.
@@ -157,9 +247,86 @@ export default function App() {
             API {health.status === "ok" ? "online" : "offline"}
           </span>
           <span className="mono">v{health.version}</span>
-          <span className="mono">Last check: {prettyTime(new Date().toISOString())}</span>
+          <span className="mono">Role: {role}</span>
+          <span className="mono">KPI source: {kpi?.data_source || "loading"}</span>
+          <span className="mono">Last check: {prettyTime(lastCheck)}</span>
+        </div>
+
+        <div className="role-toolbar">
+          <label className="role-control">
+            SOC Request Role
+            <select value={role} onChange={(event) => setRole(event.target.value)}>
+              {ROLE_OPTIONS.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </header>
+
+      <section className="phase3-grid reveal delay-1">
+        <article className="panel metric-panel">
+          <div className="panel-head">
+            <h2>Phase 3 KPI</h2>
+            <p>Live dashboard telemetry from the backend case store.</p>
+          </div>
+
+          {phase3Error && <p className="error">{phase3Error}</p>}
+
+          {!kpi && phase3Loading && <p className="placeholder">Loading KPI and SLA telemetry...</p>}
+
+          {kpi && (
+            <div className="metric-cards">
+              <div className="result-card metric-card">
+                <h3>Total Incidents</h3>
+                <p className="metric-value">{kpi.total_incidents}</p>
+                <p className="mono">Resolved: {kpi.resolved_incidents}</p>
+                <p className="mono">Critical: {kpi.critical_incidents}</p>
+              </div>
+
+              <div className="result-card metric-card">
+                <h3>Automation Rate</h3>
+                <p className="metric-value">{safePercent(kpi.automation_rate_percent)}%</p>
+                <p className="mono">False Positive: {safePercent(kpi.false_positive_rate_percent)}%</p>
+                <p className="mono">Window: {kpi.window_days} days</p>
+              </div>
+
+              <div className="result-card metric-card">
+                <h3>SLA Compliance</h3>
+                <p className="metric-value">{safePercent(sla?.compliance_percent)}%</p>
+                <p className="mono">Within SLA: {sla?.within_sla || 0}</p>
+                <p className="mono">Breaches: {sla?.breaches || 0}</p>
+              </div>
+
+              <div className="result-card metric-card">
+                <h3>Trend Snapshot</h3>
+                {latestTrend ? (
+                  <>
+                    <p className="metric-value">{latestTrend.incidents}</p>
+                    <p className="mono">Date: {latestTrend.date}</p>
+                    <p className="mono">
+                      Critical: {latestTrend.critical} | Resolved: {latestTrend.resolved}
+                    </p>
+                  </>
+                ) : (
+                  <p className="placeholder">No trend records in selected window.</p>
+                )}
+              </div>
+
+              <div className="result-card metric-card metric-wide">
+                <h3>Case Store Status</h3>
+                <p className="mono">
+                  configured={String(Boolean(caseStore?.configured))} | driver_available=
+                  {String(Boolean(caseStore?.driver_available))} | ready={String(Boolean(caseStore?.ready))}
+                </p>
+                <p className="mono">request_role={caseStore?.request_role || role}</p>
+              </div>
+            </div>
+          )}
+        </article>
+      </section>
 
       <main className="layout reveal delay-1">
         <section className="panel form-panel">
@@ -268,6 +435,7 @@ export default function App() {
                 </span>
                 <span className="mono">Category: {analysis.triage.category}</span>
                 <span className="mono">Priority: {analysis.response.containment_priority}</span>
+                <span className="mono">Case: {analysis.case_id || "N/A"}</span>
               </div>
 
               <article className="result-card">

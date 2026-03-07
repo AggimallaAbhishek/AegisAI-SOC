@@ -122,3 +122,5 @@ Live Log (Append-Only)
 [2026-03-07 18:13:08 IST] Post-implementation QA detected KPI inconsistency (resolved_incidents=0 despite resolved cases); root causes fixed in case_store severity serialization and created_at/resolved_at ordering logic.
 [2026-03-07 18:13:08 IST] Added and applied migration 0004_fix_resolved_created_order.sql; re-ran stack rebuild and validate_stack.sh successfully after fix.
 [2026-03-07 18:13:08 IST] Final runtime verification: /api/v1/phase3/case-store/status ready=true and KPI/SLA endpoints reporting data_source=postgres with live metrics.
+[2026-03-07 18:31:58 IST] User verified Phase 3 endpoints manually: KPI trends, SLA overview, RBAC policy, PostgreSQL soc_cases rows, and RBAC enforcement behavior (403 without header, 200 with viewer header).
+[2026-03-07 18:31:58 IST] Noted shell parsing noise during curl checks due inline comments; provided clean command sequence for deterministic RBAC testing and next-step handoff.

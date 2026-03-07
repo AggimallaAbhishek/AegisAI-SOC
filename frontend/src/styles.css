@@ -403,3 +403,81 @@ button.ghost {
     flex-direction: column;
   }
 }
+
+.role-toolbar {
+  margin-top: 14px;
+}
+
+.role-control {
+  display: inline-grid;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #c8d4f1;
+}
+
+.role-control select {
+  border: 1px solid rgba(143, 161, 194, 0.4);
+  border-radius: 10px;
+  background: rgba(5, 9, 15, 0.65);
+  color: #e8ecff;
+  padding: 8px 10px;
+  outline: none;
+  min-width: 160px;
+}
+
+.phase3-grid {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 16px;
+}
+
+.metric-panel {
+  padding-top: 16px;
+}
+
+.metric-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.metric-card {
+  min-height: 134px;
+}
+
+.metric-card.metric-wide {
+  grid-column: span 4;
+  min-height: auto;
+}
+
+.metric-value {
+  font-size: 1.7rem;
+  line-height: 1.1;
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: #d8f5ff;
+}
+
+@media (max-width: 1120px) {
+  .metric-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .metric-card.metric-wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 720px) {
+  .metric-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card.metric-wide {
+    grid-column: span 1;
+  }
+
+  .role-control select {
+    width: 100%;
+  }
+}
