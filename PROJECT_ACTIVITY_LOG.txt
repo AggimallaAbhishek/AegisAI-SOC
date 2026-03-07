@@ -124,3 +124,7 @@ Live Log (Append-Only)
 [2026-03-07 18:13:08 IST] Final runtime verification: /api/v1/phase3/case-store/status ready=true and KPI/SLA endpoints reporting data_source=postgres with live metrics.
 [2026-03-07 18:31:58 IST] User verified Phase 3 endpoints manually: KPI trends, SLA overview, RBAC policy, PostgreSQL soc_cases rows, and RBAC enforcement behavior (403 without header, 200 with viewer header).
 [2026-03-07 18:31:58 IST] Noted shell parsing noise during curl checks due inline comments; provided clean command sequence for deterministic RBAC testing and next-step handoff.
+[2026-03-07 18:53:49 IST] Verified user-completed Phase 3 RBAC strict-mode checks: KPI endpoint 403 without role header, 200 for viewer role, RBAC policy 403 for viewer and 200 for admin.
+[2026-03-07 18:53:49 IST] Validated stack after strict RBAC enablement: scripts/validate_stack.sh passed.
+[2026-03-07 18:53:49 IST] Added tests/conftest.py autouse fixture forcing PHASE3_RBAC_ENFORCED=false in test env to keep pytest deterministic regardless of local .env strict RBAC setting.
+[2026-03-07 18:53:49 IST] Re-ran test suite successfully after fixture update: 21 passed.
