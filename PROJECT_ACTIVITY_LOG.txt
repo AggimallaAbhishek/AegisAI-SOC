@@ -129,3 +129,4 @@ Live Log (Append-Only)
 [2026-03-07 18:53:49 IST] Added tests/conftest.py autouse fixture forcing PHASE3_RBAC_ENFORCED=false in test env to keep pytest deterministic regardless of local .env strict RBAC setting.
 [2026-03-07 18:53:49 IST] Re-ran test suite successfully after fixture update: 21 passed.
 [2026-03-07 19:35:26 IST] Diagnosed frontend runtime mismatch: UI still on Step 3 build without role selector/header injection, causing strict-RBAC 'Missing required role header x-soc-role' errors; provided rebuild/pull/hard-refresh remediation steps.
+[2026-03-07 19:41:25 IST] User validated Step 8 frontend deployment: role selector active, X-SOC-Role header enforced, Phase 3 KPI/SLA cards live from postgres, and incident analysis updates reflected in UI and KPI endpoint.
