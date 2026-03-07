@@ -237,7 +237,7 @@ export default function App() {
       <div className="bg-orb orb-3" />
 
       <header className="hero reveal">
-        <p className="eyebrow">Step 8 Frontend Console</p>
+        <p className="eyebrow">Step 9 Frontend + Automation</p>
         <h1>AegisAI SOC Mission Panel</h1>
         <p>
           Unified incident workflow for alert intake, triage interpretation, and response actioning.
