@@ -470,6 +470,36 @@ export default function App() {
                 <h3>Executive Summary</h3>
                 <p>{analysis.report.summary}</p>
               </article>
+
+              {analysis.automation && (
+                <article className="result-card">
+                  <h3>Automation Delivery</h3>
+                  <p className="mono">Jira: {analysis.automation.jira?.status || "unknown"}</p>
+                  {analysis.automation.jira?.ticket_key && (
+                    <p className="mono">
+                      Ticket: {analysis.automation.jira.ticket_key}
+                      {analysis.automation.jira.issue_url && (
+                        <>
+                          {" "}
+                          (
+                          <a href={analysis.automation.jira.issue_url} target="_blank" rel="noreferrer">
+                            open
+                          </a>
+                          )
+                        </>
+                      )}
+                    </p>
+                  )}
+                  {analysis.automation.jira?.error && (
+                    <p className="mono">Jira error: {analysis.automation.jira.error}</p>
+                  )}
+
+                  <p className="mono">Slack: {analysis.automation.slack?.status || "unknown"}</p>
+                  {analysis.automation.slack?.error && (
+                    <p className="mono">Slack error: {analysis.automation.slack.error}</p>
+                  )}
+                </article>
+              )}
             </div>
           )}
         </section>
