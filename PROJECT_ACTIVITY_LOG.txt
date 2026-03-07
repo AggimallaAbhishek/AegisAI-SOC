@@ -65,3 +65,41 @@ Live Log (Append-Only)
 [2026-03-07 02:25:31 IST] Expanded Step 6 API test coverage to include /api/v1/next-phases/integrations; re-ran test suite successfully (14 passed).
 [2026-03-07 02:28:08 IST] Provided step-by-step instructions to configure real Splunk/Jira/Slack/Postgres env values and validate Postgres reachability; highlighted .env secret-safety requirement.
 [2026-03-07 02:28:37 IST] Security check: confirmed .env is currently tracked by git; advised untracking and adding .env to .gitignore before setting real credentials.
+[2026-03-07 13:59:00 IST] Delivered step-by-step setup guidance for Splunk Cloud, Jira Cloud, and AWS RDS PostgreSQL integration values and connectivity validation.
+[2026-03-07 14:12:26 IST] Clarified Splunk docs choice: advised using help.splunk.com page (2nd result) over Splunkweb glossary page for setup workflow.
+[2026-03-07 14:14:25 IST] Guided user from Splunk docs navigation menu to actual Splunk console steps for HEC token creation and env setup.
+[2026-03-07 14:17:30 IST] Provided guided onboarding steps from Splunk account signup form through trial creation, HEC token setup, and .env configuration for SPLUNK_* values.
+[2026-03-07 14:38:19 IST] Guided user on Splunk HEC Global Settings values (enable tokens, set default index/source type, save) and next token creation step.
+[2026-03-07 14:39:48 IST] Guided user on HEC default source type selection: choose Structured -> _json (or httpevent fallback) before saving global settings.
+[2026-03-07 14:41:11 IST] Provided step-by-step guidance for Splunk HEC New Token creation (aegisai-soc-hec), token capture, .env update, and validation curl.
+[2026-03-07 14:43:18 IST] Reviewed Splunk HEC Input Settings screenshot: configuration is valid (main selected, default index main); instructed to proceed to Review and Submit token flow.
+[2026-03-07 14:44:18 IST] Confirmed Splunk HEC review configuration is valid for token aegisai-soc-hec; advised proceed to submit, capture token, and run HEC test.
+[2026-03-07 14:48:40 IST] Diagnosed blank Splunk HEC curl result; instructed user to verify shell-loaded SPLUNK_BASE_URL/SPLUNK_API_TOKEN and rerun with verbose response flags.
+[2026-03-07 14:49:56 IST] Diagnosed .env sourcing failure in zsh due to unquoted value with spaces (API_TITLE); provided safe per-variable export method for SPLUNK vars.
+[2026-03-07 14:51:10 IST] Validated SPLUNK_API_TOKEN is loaded; identified SPLUNK_BASE_URL currently points to Splunk UI host and advised switching to http-inputs HEC endpoint before retest.
+[2026-03-07 14:52:05 IST] Confirmed Splunk HEC endpoint format using http-inputs host; instructed user to export value and run HTTP response test before persisting to .env.
+[2026-03-07 14:53:28 IST] Analyzed Splunk HEC test output (HTTP 303 redirect to UI); advised using exact HEC URI from token details and adding X-Splunk-Request-Channel header due indexer acknowledgment enabled.
+[2026-03-07 14:55:38 IST] Clarified that Splunk manager URL (/manager/launcher/http-eventcollector) is admin UI page, not SPLUNK_BASE_URL ingest endpoint; guided user to use exact HEC endpoint host.
+[2026-03-07 14:57:24 IST] Diagnosed curl 'No host part' as shell variable not loaded in current session despite correct SPLUNK_BASE_URL in .env; provided direct-URL curl test and explicit export steps.
+[2026-03-07 14:58:54 IST] Diagnosed Splunk error 'Could not resolve host' as HEC endpoint DNS issue (not token length/format); provided endpoint discovery and fallback connectivity checks.
+[2026-03-07 14:59:53 IST] Reviewed DNS checks: Splunk stack host resolves, http-inputs host is NXDOMAIN; advised switching SPLUNK_BASE_URL to stack host with port 8088 for HEC ingestion test.
+[2026-03-07 15:01:07 IST] Encountered curl SSL trust error (self-signed certificate in chain) while testing Splunk HEC on stack:8088; provided temporary -k test and permanent CA-trust remediation guidance.
+[2026-03-07 15:02:26 IST] Validated Splunk HEC ingestion successfully (HTTP 200, code 0, ackId 0) using configured token and endpoint; Splunk Phase 2 integration marked ready for next steps.
+[2026-03-07 15:06:10 IST] Guided user from Atlassian Home screen to Jira project creation, project key capture, API token creation, env update, and validation workflow.
+[2026-03-07 15:07:57 IST] Reviewed Atlassian Apps screen: Jira Software not yet active; instructed user to start Jira via 'Try Atlassian products' and proceed with project creation + env wiring.
+[2026-03-07 15:10:53 IST] Clarified Atlassian product selection: choose Jira (blue icon) for ticketing integration setup, not Jira Service Management or Jira Product Discovery.
+[2026-03-07 15:12:29 IST] Reached Jira first-project creation screen; guided user on project naming and follow-up key capture for JIRA_PROJECT_KEY env mapping.
+[2026-03-07 15:14:47 IST] Confirmed Jira project board is active; provided next steps to capture project key/base URL, create Atlassian API token, update .env, and validate Jira connectivity.
+[2026-03-07 15:16:46 IST] Captured Jira base URL from user (https://aggimallaabhi.atlassian.net) and provided next commands to set JIRA_BASE_URL/JIRA_PROJECT_KEY, validate token auth, and refresh integration state.
+[2026-03-07 15:23:32 IST] Phase 2 readiness check confirms splunk_siem and jira_ticketing configured=true; next actions moved to slack_notifications and aws rds postgres_case_store setup.
+[2026-03-07 15:25:31 IST] Confirmed user is on Splunk app switcher; no further Splunk UI actions required now. Directed next execution step to Slack webhook setup, followed by AWS RDS PostgreSQL.
+[2026-03-07 15:27:34 IST] Confirmed user is in Slack workspace UI; instructed transition to api.slack.com app creation flow to enable Incoming Webhooks and capture SLACK_WEBHOOK_URL.
+[2026-03-07 15:29:18 IST] Reached Slack app authorization screen for Incoming Webhooks; instructed selecting target channel and clicking Allow to generate webhook URL for env configuration.
+[2026-03-07 15:30:45 IST] Provided ready-to-paste .env integration lines (Splunk/Jira confirmed values plus Slack webhook and Postgres DSN placeholders) for user copy-paste.
+[2026-03-07 15:31:55 IST] User completed .env updates; provided next-step sequence for Slack validation, AWS RDS PostgreSQL setup, migration execution, and final readiness verification.
+[2026-03-07 15:33:47 IST] Validated Slack webhook successfully (curl returned 'ok'); proceeded to final integration step: AWS RDS PostgreSQL setup and migration.
+[2026-03-07 15:34:03 IST] Provided step-by-step AWS RDS PostgreSQL configuration, POSTGRES_DSN setup, migration run, and final readiness validation instructions.
+[2026-03-07 16:02:11 IST] Reviewed RDS/security-group state: endpoint captured, inbound Custom TCP port currently 0 (needs 5432), and .env still has unquoted API_TITLE; provided exact remediation commands before migration run.
+[2026-03-07 16:04:41 IST] Clarified that AWS account name is not used in POSTGRES_DSN; requested RDS DB username/password and database name for final DSN construction.
+[2026-03-07 16:06:46 IST] Explained where to find RDS master username and database name in AWS console, clarified instance identifier vs DB name, and provided safe DSN/test fallback using postgres database.
+[2026-03-07 16:09:08 IST] Captured RDS master username as 'postgres' and provided exact POSTGRES_DSN template plus connectivity/migration verification commands.
